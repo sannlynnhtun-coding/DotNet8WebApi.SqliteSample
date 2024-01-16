@@ -1,0 +1,6 @@
+@DotNet8WebApi.SqliteSample_HostAddress = http://localhost:5004
+
+GET {{DotNet8WebApi.SqliteSample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

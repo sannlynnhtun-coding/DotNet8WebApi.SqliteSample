@@ -8,7 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers - Copy\**" />
+    <Content Remove="Controllers - Copy\**" />
+    <EmbeddedResource Remove="Controllers - Copy\**" />
+    <None Remove="Controllers - Copy\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
   </ItemGroup>
 
 </Project>

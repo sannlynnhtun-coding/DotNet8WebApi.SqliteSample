@@ -19,27 +19,27 @@ namespace DotNet8WebApi.SqliteSample.Controllers
         [HttpGet("Create-Table")]
         public IActionResult CreateTable()
         {
-            return Ok(_sqliteService.Execute(SqliteDbQuery.CreateTableSql));
+            return Ok(_sqliteService.Execute(SqliteDbQuery.CreateBlogTableQuery));
         }
 
         [HttpGet]
         [Route("GetList")]
         public IActionResult GetList()
         {
-            return Ok(_sqliteService.Query<BlogModel>(SqliteDbQuery.GetAllSql));
+            return Ok(_sqliteService.Query<BlogModel>(SqliteDbQuery.BlogListQuery));
         }
 
         [HttpPost]
         [Route("Create")]
         public IActionResult Create()
         {
-            BlogModel blogModel = new BlogModel();
-            blogModel.BlogId = Ulid.NewUlid().ToString();
-            blogModel.BlogTitle = "Test";
-            blogModel.BlogAuthor = "Test";
-            blogModel.BlogContent = "Test";
+            BlogModel blog = new BlogModel();
+            blog.BlogId = Ulid.NewUlid().ToString();
+            blog.BlogTitle = "Test";
+            blog.BlogAuthor = "Test";
+            blog.BlogContent = "Test";
 
-            return Ok(_sqliteService.Execute(SqliteDbQuery.InsertSql(blogModel)));
+            return Ok(_sqliteService.Execute(SqliteDbQuery.BlogCreateQuery, blog));
         }
     }
 }

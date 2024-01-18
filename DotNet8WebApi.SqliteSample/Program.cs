@@ -15,7 +15,7 @@ builder.Services.AddScoped(n =>
     Directory.CreateDirectory(folderPath);
     string filePath = Path.Combine(folderPath, builder.Configuration.GetSection("DbFileName").Value!);
     string connectionString = $"Data Source={filePath};Version=3;";
-    return new SQLiteService(connectionString);
+    return new SqliteService(connectionString);
 });
 
 var app = builder.Build();

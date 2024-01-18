@@ -1,6 +1,6 @@
 ﻿namespace DotNet8WebApi.SqliteSample.Common;
 
-public class SQLiteDbQuery
+public class SqliteDbQuery
 {
     string createTableSql = 
     @"CREATE TABLE IF NOT EXISTS Tbl_Blog 

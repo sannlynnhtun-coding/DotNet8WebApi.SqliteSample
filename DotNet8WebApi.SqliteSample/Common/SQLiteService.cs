@@ -4,11 +4,11 @@ using System.Data.SQLite;
 
 namespace DotNet8WebApi.SqliteSample.Common;
 
-public class SQLiteService
+public class SqliteService
 {
     private readonly SQLiteConnection _connection;
 
-    public SQLiteService(string connectionString)
+    public SqliteService(string connectionString)
     {
         _connection = new SQLiteConnection(connectionString);
     }

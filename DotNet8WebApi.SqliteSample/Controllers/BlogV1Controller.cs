@@ -9,9 +9,9 @@ namespace DotNet8WebApi.SqliteSample.Controllers
     [ApiController]
     public class BlogV1Controller : ControllerBase
     {
-        private readonly SQLiteService _sqliteService;
+        private readonly SqliteService _sqliteService;
 
-        public BlogV1Controller(SQLiteService sqliteService)
+        public BlogV1Controller(SqliteService sqliteService)
         {
             _sqliteService = sqliteService;
         }

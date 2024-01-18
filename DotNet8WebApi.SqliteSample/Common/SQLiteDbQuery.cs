@@ -17,6 +17,10 @@ public class SqliteDbQuery
     $@"INSERT INTO Tbl_Blog (BlogId, BlogTitle, BlogAuthor, BlogContent) 
     VALUES ('{reqModel.BlogId}', '{reqModel.BlogTitle}', '{reqModel.BlogAuthor}', '{reqModel.BlogContent}')";
 
+    public static string NewInsertSql =
+    @"INSERT INTO Tbl_Blog (BlogId, BlogTitle, BlogAuthor, BlogContent) 
+    VALUES (@BlogId, @BlogTitle, @BlogAuthor, @BlogContent)";
+
     public static string UpdateSql = @"UPDATE Tbl_Blog SET BlogTitle = @BlogTitle WHERE BlogId = @BlogId";
 
     public static string DeleteSql = @"DELETE FROM Tbl_Blog WHERE BlogId = @BlogId";

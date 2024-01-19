@@ -17,10 +17,14 @@ public class SqliteService
         _connection = new SQLiteConnection(connectionString);
     }
 
-    public List<T> Query<T>(string query)
+    public List<T> Query<T>(string query, object? parameters = null)
     {
         SQLiteCommand cmd = new SQLiteCommand(query, _connection);
         _connection.Open();
+        if (parameters != null)
+        {
+            cmd.Parameters.AddRange(AddParameters(parameters).ToArray());
+        }
         SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
         DataTable dt = new DataTable();
         adapter.Fill(dt);
@@ -30,7 +34,7 @@ public class SqliteService
         return lst!;
     }
 
-    public int Execute(string query, object parameters = null)
+    public int Execute(string query, object? parameters = null)
     {
         SQLiteCommand cmd = new SQLiteCommand(query, _connection);
         _connection.Open();

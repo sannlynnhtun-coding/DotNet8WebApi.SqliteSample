@@ -222,7 +222,5 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             string message = result > 0 ? "Deleting Successful" : "Deleting failed.";
             return Ok(message);
         }
-
-
     }
 }

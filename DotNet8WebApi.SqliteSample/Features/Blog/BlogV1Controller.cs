@@ -1,10 +1,10 @@
-﻿using DotNet8WebApi.SqliteSample.Common;
-using DotNet8WebApi.SqliteSample.Models.Blog;
+﻿using DotNet8WebApi.SqliteSample.Models;
+using DotNet8WebApi.SqliteSample.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SQLite;
 using System.Reflection.Metadata;
 
-namespace DotNet8WebApi.SqliteSample.Controllers
+namespace DotNet8WebApi.SqliteSample.Features.Blog
 {
     [Route("api/[controller]")]
     [ApiController]

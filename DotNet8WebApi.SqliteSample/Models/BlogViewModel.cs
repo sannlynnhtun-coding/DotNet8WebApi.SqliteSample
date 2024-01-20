@@ -1,4 +1,4 @@
-﻿namespace DotNet8WebApi.SqliteSample.Models.Blog
+﻿namespace DotNet8WebApi.SqliteSample.Models
 {
     public class BlogViewModel
     {

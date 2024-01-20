@@ -6,7 +6,7 @@ using System.Data.SQLite;
 using System.Reflection;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace DotNet8WebApi.SqliteSample.Common;
+namespace DotNet8WebApi.SqliteSample.Services;
 
 public class SqliteService
 {

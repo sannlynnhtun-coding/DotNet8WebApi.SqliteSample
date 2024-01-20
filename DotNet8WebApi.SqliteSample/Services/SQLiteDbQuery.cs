@@ -1,10 +1,10 @@
 ﻿using DotNet8WebApi.SqliteSample.Models.Blog;
 
-namespace DotNet8WebApi.SqliteSample.Common;
+namespace DotNet8WebApi.SqliteSample.Services;
 
 public class SqliteDbQuery
 {
-    public static string CreateBlogTableQuery = 
+    public static string CreateBlogTableQuery =
     @"CREATE TABLE IF NOT EXISTS Tbl_Blog 
     (BlogId TEXT NOT NULL, 
     BlogTitle TEXT NOT NULL, 
@@ -12,7 +12,7 @@ public class SqliteDbQuery
     BlogContent TEXT NOT NULL)";
 
     public static string BlogByIdQuery = @"SELECT * FROM Tbl_BLog WHERE BlogId = @BlogId";
-    
+
     public static string BlogListQuery = @"SELECT * FROM Tbl_Blog";
 
     public static string BlogCreateQuery =

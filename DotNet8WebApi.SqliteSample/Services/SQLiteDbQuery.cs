@@ -1,4 +1,4 @@
-﻿using DotNet8WebApi.SqliteSample.Models.Blog;
+﻿using DotNet8WebApi.SqliteSample.Models;
 
 namespace DotNet8WebApi.SqliteSample.Services;
 

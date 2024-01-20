@@ -1,4 +1,5 @@
-using DotNet8WebApi.SqliteSample.Common;
+using DotNet8WebApi.SqliteSample;
+using DotNet8WebApi.SqliteSample.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

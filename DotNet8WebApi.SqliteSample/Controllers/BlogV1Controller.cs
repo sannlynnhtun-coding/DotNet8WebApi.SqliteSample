@@ -65,23 +65,23 @@ namespace DotNet8WebApi.SqliteSample.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult BlogPatch(string id, BlogRequestModel requestModel)
+        public IActionResult BlogPatch(string id, BlogViewModel requestModel)
         {
             var blog = new BlogModel();
             blog.BlogId = id;
 
-            if (string.IsNullOrEmpty(requestModel.BlogTitle))
+            if (!string.IsNullOrEmpty(requestModel.BlogTitle))
             {
-                throw new Exception("requestModel.BlogTitle is null");
+                blog.BlogTitle = requestModel.BlogTitle;
             }
-
-            if (string.IsNullOrEmpty(requestModel.BlogContent))
+            if (!string.IsNullOrEmpty(requestModel.BlogAuthor))
             {
-                throw new Exception("requestModel.BlogContent is null");
+                blog.BlogAuthor = requestModel.BlogAuthor;
             }
-
-            blog.BlogTitle = requestModel.BlogTitle;
-            blog.BlogContent = requestModel.BlogContent;
+            if (!string.IsNullOrEmpty(requestModel.BlogContent))
+            {
+                blog.BlogContent = requestModel.BlogContent;
+            }
 
             return Ok(_sqliteService.Execute(SqliteDbQuery.BlogPatchQuery, blog));
         }

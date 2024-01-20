@@ -8,11 +8,11 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BlogV1Controller : ControllerBase
+    public class BlogV3Controller : ControllerBase
     {
         private readonly SqliteService _sqliteService;
 
-        public BlogV1Controller(SqliteService sqliteService)
+        public BlogV3Controller(SqliteService sqliteService)
         {
             _sqliteService = sqliteService;
         }

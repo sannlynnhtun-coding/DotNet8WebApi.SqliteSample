@@ -24,7 +24,6 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
         [HttpGet]
         public IActionResult BlogList()
         {
-
             SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
             connection.Open();
 
@@ -61,8 +60,6 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             var lst = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt));
 
             return Ok(lst);
-
         }
-
     }
 }

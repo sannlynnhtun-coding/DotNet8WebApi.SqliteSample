@@ -42,12 +42,7 @@ namespace DotNet8WebApi.SqliteSample.Controllers
         [HttpPost]
         public IActionResult BlogCreate(BlogModel blog)
         {
-            //BlogModel blog = new BlogModel();
             blog.BlogId = Ulid.NewUlid().ToString();
-            //blog.BlogTitle = "Test";
-            //blog.BlogAuthor = "Test";
-            //blog.BlogContent = "Test";
-
             return Ok(_sqliteService.Execute(SqliteDbQuery.BlogCreateQuery, blog));
         }
 

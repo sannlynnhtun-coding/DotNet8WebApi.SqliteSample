@@ -18,7 +18,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             _connectionStringBuilder = new SQLiteConnectionStringBuilder
             {
                 DataSource = "Blog.db",
-                Password = "sa@123",     
+                Password = "sa@123",
             };
         }
 
@@ -39,7 +39,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             return Ok(lst);
         }
 
-        [HttpGet("Id")]
+        [HttpGet("{Id}")]
         public IActionResult BlogGetById(string id)
         {
             SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
@@ -55,12 +55,174 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
 
             if (dt.Rows.Count == 0)
             {
-                return NotFound ("No Data Found.");
+                return NotFound("No Data Found.");
             }
 
             var lst = JsonConvert.DeserializeObject<List<BlogModel>>(JsonConvert.SerializeObject(dt));
             var item = lst![0];
             return Ok(item);
         }
+
+        [HttpPost]
+        public IActionResult BlogCreate(BlogModel blog)
+        {
+            SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
+            connection.Open();
+            blog.BlogId = Ulid.NewUlid().ToString();
+            string query = "INSERT INTO Tbl_BLog (BlogTitle, BlogAuthor,BlogContent ) VALUES (@BlogTitle, @BlogAuthor, @BlogContent)";
+
+            SQLiteCommand cmd = new SQLiteCommand(query, connection);
+            cmd.Parameters.AddWithValue("@BlogId", blog.BlogId);
+            cmd.Parameters.AddWithValue("@BlogTitle", blog.BlogTitle);
+            cmd.Parameters.AddWithValue("@BlogAuthor", blog.BlogAuthor);
+            cmd.Parameters.AddWithValue("@BlogContent", blog.BlogContent);
+            int result = cmd.ExecuteNonQuery();
+
+            connection.Close();
+            string message = result > 0 ? "Saving Successful" : "Saving failed.";
+            var response = new
+            {
+                Message = message,
+                Blog = blog,
+            };
+
+            return Ok(response);
+        }
+
+        [HttpPut("{Id}")]
+        public IActionResult BlogPut(string id, BlogModel blog)
+        {
+            SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
+            connection.Open();
+
+            string query = @"UPDATE Tbl_Blog 
+                     SET BlogTitle = @BlogTitle,
+                         BlogAuthor = @BlogAuthor,
+                         BlogContent = @BlogContent 
+                     WHERE BlogId = @BlogId";
+
+            SQLiteCommand cmd = new SQLiteCommand(query, connection);
+            cmd.Parameters.AddWithValue("@BlogId", id);
+            cmd.Parameters.AddWithValue("@BlogTitle", blog.BlogTitle);
+            cmd.Parameters.AddWithValue("@BlogAuthor", blog.BlogAuthor);
+            cmd.Parameters.AddWithValue("@BlogContent", blog.BlogContent);
+
+            int result = cmd.ExecuteNonQuery();
+
+            connection.Close();
+
+            string message = result > 0 ? "Update Successful" : "Update failed.";
+            var response = new
+            {
+                Message = message,
+                Blog = blog,
+            };
+
+            return Ok(response);
+        }
+
+        [HttpPatch("{Id}")]
+        public IActionResult BlogPatch(string id, BlogModel blog)
+        {
+            SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
+            connection.Open();
+
+            string getQuery = "SELECT * FROM Tbl_Blog WHERE BlogId = @BlogId";
+            SQLiteCommand getCmd = new SQLiteCommand(getQuery, connection);
+            getCmd.Parameters.AddWithValue("@BlogId", id);
+
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(getCmd);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            if (dt.Rows.Count == 0)
+            {
+                connection.Close();
+                return NotFound("Blog not found");
+            }
+
+            var existingBlog = JsonConvert.DeserializeObject<List<BlogModel>>(JsonConvert.SerializeObject(dt))[0];
+
+            string updateQuery = @"UPDATE Tbl_Blog 
+                           SET BlogTitle = @BlogTitle,
+                               BlogAuthor = @BlogAuthor,
+                               BlogContent = @BlogContent 
+                           WHERE BlogId = @BlogId";
+
+            SQLiteCommand updateCmd = new SQLiteCommand(updateQuery, connection);
+            updateCmd.Parameters.AddWithValue("@BlogId", id);
+
+            if (!string.IsNullOrEmpty(blog.BlogTitle))
+            {
+                updateCmd.Parameters.AddWithValue("@BlogTitle", blog.BlogTitle);
+            }
+            else
+            {
+                updateCmd.Parameters.AddWithValue("@BlogTitle", existingBlog.BlogTitle);
+            }
+
+            if (!string.IsNullOrEmpty(blog.BlogAuthor))
+            {
+                updateCmd.Parameters.AddWithValue("@BlogAuthor", blog.BlogAuthor);
+            }
+            else
+            {
+                updateCmd.Parameters.AddWithValue("@BlogAuthor", existingBlog.BlogAuthor);
+            }
+
+            if (!string.IsNullOrEmpty(blog.BlogContent))
+            {
+                updateCmd.Parameters.AddWithValue("@BlogContent", blog.BlogContent);
+            }
+            else
+            {
+                updateCmd.Parameters.AddWithValue("@BlogContent", existingBlog.BlogContent);
+            }
+
+            int result = updateCmd.ExecuteNonQuery();
+
+            connection.Close();
+
+            string message = result > 0 ? "Update Successful" : "Update failed.";
+            var response = new
+            {
+                Message = message,
+                Blog = existingBlog,
+            };
+
+            return Ok(response);
+        }
+
+        [HttpDelete("{Id}")]
+        public IActionResult BlogDelete(string id)
+        {
+            SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
+            connection.Open();
+
+            string checkQuery = "SELECT * FROM Tbl_Blog WHERE BlogId = @BlogId";
+            SQLiteCommand checkCmd = new SQLiteCommand(checkQuery, connection);
+            checkCmd.Parameters.AddWithValue("@BlogId", id);
+
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(checkCmd);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            if (dt.Rows.Count == 0)
+            {
+                connection.Close();
+                return NotFound("Blog not found");
+            }
+
+            string deleteQuery = "DELETE FROM Tbl_Blog WHERE BlogId = @BlogId";
+            SQLiteCommand cmd = new SQLiteCommand(deleteQuery, connection);
+            cmd.Parameters.AddWithValue("@BlogId", id);
+            int result = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            string message = result > 0 ? "Deleting Successful" : "Deleting failed.";
+            return Ok(message);
+        }
+
+
     }
 }

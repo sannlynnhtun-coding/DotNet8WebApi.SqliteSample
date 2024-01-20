@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DotNet8WebApi.SqliteSample.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Data;
@@ -34,7 +35,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             adapter.Fill(dt);
             connection.Close();
 
-            var lst = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt));
+            var lst = JsonConvert.DeserializeObject<List<BlogModel>>(JsonConvert.SerializeObject(dt));
             return Ok(lst);
         }
 
@@ -57,9 +58,9 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
                 return NotFound ("No Data Found.");
             }
 
-            var lst = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt));
-
-            return Ok(lst);
+            var lst = JsonConvert.DeserializeObject<List<BlogModel>>(JsonConvert.SerializeObject(dt));
+            var item = lst![0];
+            return Ok(item);
         }
     }
 }

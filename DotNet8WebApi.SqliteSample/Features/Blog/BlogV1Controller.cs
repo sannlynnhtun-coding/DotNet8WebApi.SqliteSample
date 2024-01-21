@@ -79,7 +79,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             int result = cmd.ExecuteNonQuery();
 
             connection.Close();
-            string message = result > 0 ? "Saving Successful" : "Saving Failed.";
+            string message = result > 0 ? "Saving Successful." : "Saving Failed.";
             var response = new
             {
                 Message = message,
@@ -109,7 +109,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             int result = cmd.ExecuteNonQuery();
             connection.Close();
 
-            string message = result > 0 ? "Update Successful" : "Update Failed.";
+            string message = result > 0 ? "Update Successful." : "Update Failed.";
             var response = new
             {
                 Message = message,
@@ -181,7 +181,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
 
             connection.Close();
 
-            string message = result > 0 ? "Update Successful" : "Update Failed.";
+            string message = result > 0 ? "Update Successful." : "Update Failed.";
             var response = new
             {
                 Message = message,
@@ -217,7 +217,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             int result = cmd.ExecuteNonQuery();
             connection.Close();
 
-            string message = result > 0 ? "Deleting Successful" : "Deleting Failed.";
+            string message = result > 0 ? "Deleting Successful." : "Deleting Failed.";
             return Ok(message);
         }
     }

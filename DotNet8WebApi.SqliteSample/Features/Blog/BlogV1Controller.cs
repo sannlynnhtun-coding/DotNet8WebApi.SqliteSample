@@ -25,10 +25,10 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
         [HttpGet]
         public IActionResult BlogList()
         {
+            string query = "SELECT * FROM Tbl_Blog";
             SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
             connection.Open();
 
-            string query = "SELECT * FROM Tbl_Blog";
             SQLiteCommand cmd = new SQLiteCommand(query, connection);
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -42,9 +42,9 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
         [HttpGet("{id}")]
         public IActionResult BlogGetById(string id)
         {
+            string query = "SELECT * FROM Tbl_BLog WHERE BlogId = @BlogId";
             SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
             connection.Open();
-            string query = "SELECT * FROM Tbl_BLog WHERE BlogId = @BlogId";
 
             SQLiteCommand cmd = new SQLiteCommand(query, connection);
             cmd.Parameters.AddWithValue("@BlogId", id);
@@ -66,10 +66,10 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
         [HttpPost]
         public IActionResult BlogCreate(BlogModel blog)
         {
+            string query = "INSERT INTO Tbl_BLog (BlogTitle, BlogAuthor,BlogContent ) VALUES (@BlogTitle, @BlogAuthor, @BlogContent)";
             SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
             connection.Open();
             blog.BlogId = Ulid.NewUlid().ToString();
-            string query = "INSERT INTO Tbl_BLog (BlogTitle, BlogAuthor,BlogContent ) VALUES (@BlogTitle, @BlogAuthor, @BlogContent)";
 
             SQLiteCommand cmd = new SQLiteCommand(query, connection);
             cmd.Parameters.AddWithValue("@BlogId", blog.BlogId);
@@ -92,14 +92,13 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
         [HttpPut("{id}")]
         public IActionResult BlogPut(string id, BlogModel blog)
         {
-            SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
-            connection.Open();
-
             string query = @"UPDATE Tbl_Blog 
                      SET BlogTitle = @BlogTitle,
                          BlogAuthor = @BlogAuthor,
                          BlogContent = @BlogContent 
                      WHERE BlogId = @BlogId";
+            SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
+            connection.Open();
 
             SQLiteCommand cmd = new SQLiteCommand(query, connection);
             cmd.Parameters.AddWithValue("@BlogId", id);
@@ -108,7 +107,6 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             cmd.Parameters.AddWithValue("@BlogContent", blog.BlogContent);
 
             int result = cmd.ExecuteNonQuery();
-
             connection.Close();
 
             string message = result > 0 ? "Update Successful" : "Update Failed.";
@@ -124,10 +122,10 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
         [HttpPatch("{id}")]
         public IActionResult BlogPatch(string id, BlogModel blog)
         {
+            string getQuery = "SELECT * FROM Tbl_Blog WHERE BlogId = @BlogId";
             SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
             connection.Open();
 
-            string getQuery = "SELECT * FROM Tbl_Blog WHERE BlogId = @BlogId";
             SQLiteCommand getCmd = new SQLiteCommand(getQuery, connection);
             getCmd.Parameters.AddWithValue("@BlogId", id);
 
@@ -196,10 +194,10 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
         [HttpDelete("{id}")]
         public IActionResult BlogDelete(string id)
         {
+            string checkQuery = "SELECT * FROM Tbl_Blog WHERE BlogId = @BlogId";
             SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
             connection.Open();
 
-            string checkQuery = "SELECT * FROM Tbl_Blog WHERE BlogId = @BlogId";
             SQLiteCommand checkCmd = new SQLiteCommand(checkQuery, connection);
             checkCmd.Parameters.AddWithValue("@BlogId", id);
 

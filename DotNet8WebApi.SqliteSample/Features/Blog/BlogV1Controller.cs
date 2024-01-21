@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Data;
 using System.Data.SQLite;
+using System.Reflection.Metadata;
 
 namespace DotNet8WebApi.SqliteSample.Features.Blog
 {
@@ -35,7 +36,33 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             adapter.Fill(dt);
             connection.Close();
 
-            var lst = JsonConvert.DeserializeObject<List<BlogModel>>(JsonConvert.SerializeObject(dt));
+            #region Code Style 1
+
+            List<BlogModel> lst = new List<BlogModel>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                BlogModel blog = new BlogModel();
+                blog.BlogId = Convert.ToString(dr["BlogId"]);
+                blog.BlogTitle = Convert.ToString(dr["BlogTitle"]);
+                blog.BlogAuthor = Convert.ToString(dr["BlogAuthor"]);
+                blog.BlogContent = Convert.ToString(dr["BlogContent"]);
+                lst.Add(blog);
+            }
+
+            #endregion
+
+            #region Code Style 2
+
+            var lst2 = dt.AsEnumerable().Select(dr => new BlogModel
+            {
+                BlogId = Convert.ToString(dr["BlogId"]),
+                BlogTitle = Convert.ToString(dr["BlogTitle"]),
+                BlogAuthor = Convert.ToString(dr["BlogAuthor"]),
+                BlogContent = Convert.ToString(dr["BlogContent"])
+            }).ToList();
+
+            #endregion
+
             return Ok(lst);
         }
 
@@ -58,8 +85,12 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
                 return NotFound("No Data Found.");
             }
 
-            var lst = JsonConvert.DeserializeObject<List<BlogModel>>(JsonConvert.SerializeObject(dt));
-            var item = lst![0];
+            DataRow dr = dt.Rows[0];
+            BlogModel item = new BlogModel();
+            item.BlogId = Convert.ToString(dr["BlogId"]);
+            item.BlogTitle = Convert.ToString(dr["BlogTitle"]);
+            item.BlogAuthor = Convert.ToString(dr["BlogAuthor"]);
+            item.BlogContent = Convert.ToString(dr["BlogContent"]);
             return Ok(item);
         }
 
@@ -80,13 +111,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
 
             connection.Close();
             string message = result > 0 ? "Saving Successful." : "Saving Failed.";
-            var response = new
-            {
-                Message = message,
-                Blog = blog,
-            };
-
-            return Ok(response);
+            return Ok(message);
         }
 
         [HttpPut("{id}")]
@@ -110,13 +135,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             connection.Close();
 
             string message = result > 0 ? "Update Successful." : "Update Failed.";
-            var response = new
-            {
-                Message = message,
-                Blog = blog,
-            };
-
-            return Ok(response);
+            return Ok(message);
         }
 
         [HttpPatch("{id}")]
@@ -182,13 +201,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             connection.Close();
 
             string message = result > 0 ? "Update Successful." : "Update Failed.";
-            var response = new
-            {
-                Message = message,
-                Blog = existingBlog,
-            };
-
-            return Ok(response);
+            return Ok(message);
         }
 
         [HttpDelete("{id}")]

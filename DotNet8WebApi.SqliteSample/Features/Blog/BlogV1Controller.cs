@@ -39,7 +39,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             return Ok(lst);
         }
 
-        [HttpGet("{Id}")]
+        [HttpGet("{id}")]
         public IActionResult BlogGetById(string id)
         {
             SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
@@ -79,7 +79,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             int result = cmd.ExecuteNonQuery();
 
             connection.Close();
-            string message = result > 0 ? "Saving Successful" : "Saving failed.";
+            string message = result > 0 ? "Saving Successful" : "Saving Failed.";
             var response = new
             {
                 Message = message,
@@ -89,7 +89,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             return Ok(response);
         }
 
-        [HttpPut("{Id}")]
+        [HttpPut("{id}")]
         public IActionResult BlogPut(string id, BlogModel blog)
         {
             SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
@@ -111,7 +111,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
 
             connection.Close();
 
-            string message = result > 0 ? "Update Successful" : "Update failed.";
+            string message = result > 0 ? "Update Successful" : "Update Failed.";
             var response = new
             {
                 Message = message,
@@ -121,7 +121,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             return Ok(response);
         }
 
-        [HttpPatch("{Id}")]
+        [HttpPatch("{id}")]
         public IActionResult BlogPatch(string id, BlogModel blog)
         {
             SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
@@ -183,7 +183,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
 
             connection.Close();
 
-            string message = result > 0 ? "Update Successful" : "Update failed.";
+            string message = result > 0 ? "Update Successful" : "Update Failed.";
             var response = new
             {
                 Message = message,
@@ -193,7 +193,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             return Ok(response);
         }
 
-        [HttpDelete("{Id}")]
+        [HttpDelete("{id}")]
         public IActionResult BlogDelete(string id)
         {
             SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
@@ -219,7 +219,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
             int result = cmd.ExecuteNonQuery();
             connection.Close();
 
-            string message = result > 0 ? "Deleting Successful" : "Deleting failed.";
+            string message = result > 0 ? "Deleting Successful" : "Deleting Failed.";
             return Ok(message);
         }
     }

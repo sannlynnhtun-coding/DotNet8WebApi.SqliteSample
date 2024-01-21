@@ -139,7 +139,7 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
                 return NotFound("Blog not found");
             }
 
-            var existingBlog = JsonConvert.DeserializeObject<List<BlogModel>>(JsonConvert.SerializeObject(dt))[0];
+            var existingBlog = JsonConvert.DeserializeObject<List<BlogModel>>(JsonConvert.SerializeObject(dt))![0];
 
             string updateQuery = @"UPDATE Tbl_Blog 
                            SET BlogTitle = @BlogTitle,

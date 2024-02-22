@@ -1,4 +1,5 @@
 ﻿using DotNet8WebApi.SqliteSample.Models;
+using DotNet8WebApi.SqliteSample.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -21,6 +22,22 @@ namespace DotNet8WebApi.SqliteSample.Features.Blog
                 DataSource = "Blog.db",
                 Password = "sa@123",
             };
+        }
+
+        [HttpGet("Create-Table")]
+        public IActionResult CreateBlogTable()
+        {
+            string query = SqliteDbQuery.CreateBlogTableQuery;
+            SQLiteConnection connection = new SQLiteConnection(_connectionStringBuilder.ConnectionString);
+            connection.Open();
+
+            SQLiteCommand cmd = new SQLiteCommand(query, connection);
+            int result = cmd.ExecuteNonQuery();
+
+            connection.Close();
+
+            string message = result > 0 ? "Creating Successful." : "Creating Failed.";
+            return Ok(message);
         }
 
         [HttpGet]
